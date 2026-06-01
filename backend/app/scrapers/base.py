@@ -36,7 +36,10 @@ class PlaywrightSession:
     async def __aenter__(self):
         self._pw_cm = async_playwright()
         pw = await self._pw_cm.__aenter__()
-        launch_kwargs = {"headless": settings.playwright_headless}
+        launch_kwargs = {
+            "headless": settings.playwright_headless,
+            "args": ["--no-sandbox", "--disable-setuid-sandbox"],
+        }
         if self._channel:
             launch_kwargs["channel"] = self._channel
         self._browser = await pw.chromium.launch(**launch_kwargs)
