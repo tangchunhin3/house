@@ -5,7 +5,6 @@ from app.scrapers.base import PlaywrightScraper, parse_price, parse_area, parse_
 
 class RicacorpScraper(PlaywrightScraper):
     SOURCE_NAME = "利嘉閣"
-    PLAYWRIGHT_CHANNEL = "chrome"
     AREA_URLS = [
         "https://www.ricacorp.com/zh-hk/property/list/buy/%E5%B1%AF%E9%96%80-district-%E6%96%B0%E7%95%8C%E8%A5%BF-scope-hk",
         "https://www.ricacorp.com/zh-hk/property/list/buy/%E6%8E%83%E7%AE%A1%E7%AC%8F-district-%E6%96%B0%E7%95%8C%E8%A5%BF-scope-hk",

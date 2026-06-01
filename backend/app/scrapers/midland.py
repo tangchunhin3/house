@@ -5,7 +5,6 @@ from app.scrapers.base import PlaywrightScraper, parse_price, parse_area, parse_
 
 class MidlandScraper(PlaywrightScraper):
     SOURCE_NAME = "美聯"
-    PLAYWRIGHT_CHANNEL = "chrome"
     AREA_URLS = [
         "https://www.midland.com.hk/zh-hk/list/buy/屯門-市中心-D-130ND30013",
         "https://www.midland.com.hk/zh-hk/list/buy/屯門-碼頭-D-130ND30012",
