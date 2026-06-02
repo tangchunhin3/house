@@ -187,8 +187,8 @@ class RicacorpScraper(PlaywrightScraper):
     async def _scrape_area(self, base_url: str, page, seen_urls: set) -> list[dict]:
         area_results = []
         try:
-            await page.goto(base_url, wait_until="domcontentloaded", timeout=45000)
-            await page.wait_for_timeout(5000)
+            await page.goto(base_url, wait_until="domcontentloaded", timeout=90000)
+            await page.wait_for_timeout(8000)
             await self.session.delay()
         except Exception:
             return area_results

@@ -33,7 +33,10 @@ def list_properties(
 ):
     q = db.query(Property)
 
-    q = q.filter(Property.is_transaction.is_(is_transaction))
+    if is_transaction:
+        q = q.filter(Property.is_transaction.is_(True))
+    else:
+        q = q.filter(Property.is_transaction.isnot(True))
 
     if source:
         sources = [s.strip() for s in source.split(",")]
