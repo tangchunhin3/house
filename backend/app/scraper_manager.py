@@ -149,6 +149,11 @@ async def run_all_scrapers(session_id: Optional[int] = None, keyword: str = "") 
                     else:
                         logger.info(f"{source_name}: {found} found, {inserted} inserted")
 
+        # Refresh session to include Phase-1 scraper_results (28Hse) committed by _run_request_scraper.
+        # Without this refresh, the identity map returns the stale sess object (scraper_results="{}"),
+        # and _update_session_scrapers below would overwrite the Phase-1 results at the final commit.
+        db.refresh(sess)
+
         # Phase 2: Playwright-based scrapers (each in its own browser session)
         for scraper_cls in PLAYWRIGHT_SCRAPERS:
             name = scraper_cls.SOURCE_NAME

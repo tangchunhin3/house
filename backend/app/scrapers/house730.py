@@ -11,7 +11,6 @@ class House730Scraper(PlaywrightScraper):
         "https://www.house730.com/en-us/buy/hk/",
         "https://www.house730.com/zh-hk/buy/hk/",
     ]
-    ESTATE_SEARCH_NAMES = ["黃金海灣", "上源", "飛揚"]
     MAX_PAGES = settings.playwright_max_pages
 
     @staticmethod
@@ -226,13 +225,6 @@ class House730Scraper(PlaywrightScraper):
 
             if all_results:
                 break
-
-        page = await self.session.new_page()
-        try:
-            for estate_name in self.ESTATE_SEARCH_NAMES:
-                await self._scrape_keyword(estate_name, page, seen_urls, all_results)
-        finally:
-            await page.close()
 
         if not all_results:
             try:

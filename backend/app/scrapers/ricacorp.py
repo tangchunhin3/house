@@ -14,7 +14,6 @@ class RicacorpScraper(PlaywrightScraper):
         "https://www.ricacorp.com/zh-hk/property/list/buy/%E9%BB%83%E9%87%91%E6%B5%B7%E5%B2%B8-district-%E6%96%B0%E7%95%8C%E8%A5%BF-scope-hk",
         "https://www.ricacorp.com/zh-hk/property/list/buy/%E9%9D%92%E5%B1%B1%E5%85%AC%E8%B7%AF-district-%E6%96%B0%E7%95%8C%E8%A5%BF-scope-hk",
     ]
-    ESTATE_SEARCH_NAMES = ["黃金海灣", "上源", "飛揚"]
     MAX_PAGES = settings.playwright_max_pages
 
     @staticmethod
@@ -283,8 +282,6 @@ class RicacorpScraper(PlaywrightScraper):
                 area_results = await self._scrape_area(base_url, page, seen_urls)
                 all_results.extend(area_results)
 
-            for estate_name in self.ESTATE_SEARCH_NAMES:
-                await self._scrape_keyword(estate_name, page, seen_urls, all_results)
         finally:
             await page.close()
         return all_results

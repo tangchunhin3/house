@@ -13,7 +13,6 @@ class MidlandScraper(PlaywrightScraper):
         "https://www.midland.com.hk/zh-hk/list/buy/小欖-D-130ND30016",
         "https://www.midland.com.hk/zh-hk/list/buy/黃金海岸-D-130ND30021",
     ]
-    ESTATE_SEARCH_NAMES = ["黃金海灣", "上源", "飛揚"]
     MAX_PAGES = settings.playwright_max_pages
 
     @staticmethod
@@ -238,8 +237,6 @@ class MidlandScraper(PlaywrightScraper):
                     if new_count < 2:
                         break
 
-            for estate_name in self.ESTATE_SEARCH_NAMES:
-                await self._scrape_keyword(estate_name, page, seen_urls, all_results)
         finally:
             await page.close()
         return all_results

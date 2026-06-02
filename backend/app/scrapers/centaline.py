@@ -6,7 +6,6 @@ from app.scrapers.base import PlaywrightScraper, parse_price, parse_area, parse_
 class CentalineScraper(PlaywrightScraper):
     SOURCE_NAME = "中原"
     BASE_URL = "https://hk.centanet.com/findproperty/list/buy/%E5%B1%AF%E9%96%80_23-WS046"
-    ESTATE_SEARCH_NAMES = ["黃金海灣", "上源", "飛揚"]
     MAX_PAGES = settings.playwright_max_pages
 
     @staticmethod
@@ -189,8 +188,6 @@ class CentalineScraper(PlaywrightScraper):
                 if new_count < 2:
                     break
 
-            for estate_name in self.ESTATE_SEARCH_NAMES:
-                await self._scrape_keyword(estate_name, page, seen_urls, all_results)
         finally:
             await page.close()
         return all_results
