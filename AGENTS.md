@@ -4,6 +4,15 @@
 
 屯門樓盤搜尋 — scrapes property listings (買樓) across 6 HK agencies for Tuen Mun district. Python FastAPI backend + React frontend.
 
+## URLs
+
+| URL | Type | Data |
+|-----|------|------|
+| https://associates-ccd-watts-injuries.trycloudflare.com | Local (cloudflared) | **All 5 agencies** (full scrape) |
+| https://house-production-2eb1.up.railway.app | Railway (production) | 28Hse only (Playwright blocked on cloud IPs) |
+
+Use the **local tunnel URL** for full data. Railway serves as always-on public API with 28Hse data.
+
 ## Quick start
 
 ```bash
