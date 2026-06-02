@@ -186,53 +186,45 @@ class RicacorpScraper(PlaywrightScraper):
 
     async def _scrape_area(self, base_url: str, page, seen_urls: set) -> list[dict]:
         area_results = []
-        for page_num in range(1, self.MAX_PAGES + 1):
-            url = f"{base_url}?page={page_num}"
-            try:
-                await page.goto(url, wait_until="domcontentloaded", timeout=45000)
-                await page.wait_for_timeout(5000)
-                await self.session.delay()
-            except Exception:
-                break
+        try:
+            await page.goto(base_url, wait_until="domcontentloaded", timeout=45000)
+            await page.wait_for_timeout(5000)
+            await self.session.delay()
+        except Exception:
+            return area_results
 
-            page_results = await self._extract_page(page)
-            if not page_results:
-                break
+        page_results = await self._extract_page(page)
+        for p in page_results:
+            u = p.get("source_url", "")
+            if u and u in seen_urls:
+                continue
+            if u:
+                seen_urls.add(u)
+            area_results.append(p)
 
-            new_count = 0
-            for p in page_results:
-                u = p.get("source_url", "")
-                if u and u in seen_urls:
-                    continue
-                if u:
-                    seen_urls.add(u)
-                area_results.append(p)
-                new_count += 1
-
-            if new_count < 2:
-                break
-
-        # Try Angular paginator click-based pagination
-        for _ in range(5):
+        for _ in range(self.MAX_PAGES):
             try:
                 has_next = await page.eval_on_selector_all(
-                    "button[aria-label*='next' i], button[aria-label*='下一頁'], "
                     ".mat-paginator-navigation-next:not([disabled]), "
+                    "button[aria-label*='next' i]:not([disabled]), "
+                    "button[aria-label*='下一頁']:not([disabled]), "
                     "a[rel='next']:not([disabled])",
-                    "els => els.length > 0"
+                    "els => els.length > 0 && els[0]"
                 )
                 if not has_next:
                     break
 
                 await page.eval_on_selector(
-                    "button[aria-label*='next' i], button[aria-label*='下一頁'], "
-                    ".mat-paginator-navigation-next",
+                    ".mat-paginator-navigation-next, "
+                    "button[aria-label*='next' i], "
+                    "button[aria-label*='下一頁']",
                     "el => el.click()"
                 )
                 await page.wait_for_timeout(5000)
                 await self.session.delay()
 
                 page_results = await self._extract_page(page)
+                new_count = 0
                 for p in page_results:
                     u = p.get("source_url", "")
                     if u and u in seen_urls:
@@ -240,6 +232,10 @@ class RicacorpScraper(PlaywrightScraper):
                     if u:
                         seen_urls.add(u)
                     area_results.append(p)
+                    new_count += 1
+
+                if new_count < 2:
+                    break
             except Exception:
                 break
 

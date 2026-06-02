@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     playwright_headless: bool = True
     request_delay_seconds: float = 0.5
     max_pages: int = 50
-    playwright_max_pages: int = 5
+    playwright_max_pages: int = 15
 
     class Config:
         env_file = ".env"
